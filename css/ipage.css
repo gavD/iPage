@@ -1,0 +1,35 @@
+/********* This is important class --- PLEASE DO NOT CHANGE IT ----- ****/
+.hide,.notmatch{
+	display:none!important;
+}
+/********* Custom style for iPage navigation --- You can EDIT :) ********/
+.pager ul.pages{
+	position:relative;
+	margin-bottom:15px;
+	float:left;
+	width:100%;
+	margin:0 10px  6px 5px ;
+	text-align:center;
+}
+.pager ul.pages li {
+	list-style-type:none;
+	display:inline-block;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background:#5E2F46;
+	font-family: Arial;
+	text-decoration:none;
+	font-weight:bold;
+	margin: 2px 0 0 10px;
+	padding: 6px 10px 6px 10px;
+	width:12px;
+	height:20px;
+	color: #09F;
+}
+.pager ul.pages li.pgCurrent {
+	color:#FFC0CB;
+}
+.pages li:hover{
+	cursor:pointer;
+}
