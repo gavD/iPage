@@ -4,6 +4,8 @@ I did not write this plugin, but I have made some enhancements to it and am host
 
 I'm working on the assumption that iPage is under the jQuery (MIT) license. If there's any problem at all with me hosting this, let me know and I'll pull it down.
 
+Note that I've only modified the jQuery version
+
 # Usage
 
 I've added a few options. All are optional:
