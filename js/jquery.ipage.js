@@ -3,7 +3,7 @@
  * 
  * We have submitted a patch back to the original project
  * 
- * @version 1.0.1 Modified by Gavin Davies
+ * @version 1.0.2 Modified by Gavin Davies
  *
  * Code by Lufutu
  * @link http://lufutu.com
