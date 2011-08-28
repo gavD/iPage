@@ -10,19 +10,21 @@ Note that I've only modified the jQuery version
 
 I've added a few options. All are optional:
 
-nextButtonText : string. the text on the "next" button. Defaults to ">"
-prevButtonText : string. the text on the "prev" button. Defaults to "<"
-lastButtonText : string. the text on the "last" button. Defaults to ">>"
-firstButtonText : string. the text on the "first" button. Defaults to "<<"
-insertPage : function. Provided to allow you to insert the pager in places other than the default.
+ * nextButtonText : string. the text on the "next" button. Defaults to ">"
+ * prevButtonText : string. the text on the "prev" button. Defaults to "<"
+ * lastButtonText : string. the text on the "last" button. Defaults to ">>"
+ * firstButtonText : string. the text on the "first" button. Defaults to "<<"
+ * insertPage : function. Provided to allow you to insert the pager in places other than the default.
+ * toolbarPosition: string. top, bottom or both. Defaults to "bottom". Mutually exclusive
+   with "insertPage" - if you provide an insertPage function in your configuration object,
+   this will have no effect
 
 Example usage:
 
 ```javascript
            $(document).ready(function() {
-                $("form.conForm").ipage({
+                $("form.myPagedForm").ipage({
                     pagenumber: 1,
-                    //buttonClickCallback: PageGiftClick,
                     root : 'form.conForm',
                     numPerPage : 1 ,
                     children: 'fieldset.fieldGroup',
@@ -30,12 +32,14 @@ Example usage:
                     nextButtonText: "Next page",
                     prevButtonText: "Previous page",
                     insertPager: function(ipage) {
-                        $(ipage).find('div.submitRow').before('<div id="iPage-navigation" class="pager"></div>');
-                    }
+                        $(ipage).find('div.submitRow').before('<div id="iPage-navigation-bottom" class="pager"></div>');
+                    },
+                    toolbarPosition: 'top'
                 });
             });
 ```
 
 # Other changes
 
-Various code tidying and implementing some of the less strict JSLint recommendations so it minifies more cleanly.
+ * Various code tidying and implementing some of the less strict JSLint recommendations so it minifies more cleanly.
+ * Rely less on button label text and more on classes, which are more predictable
