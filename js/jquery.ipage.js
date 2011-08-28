@@ -31,8 +31,15 @@
             nextButtonText: "Next page",
             firstButtonText: "First page",
             lastButtonText: "Last page",
+            toolbarPosition: "bottom", // bvalid values: "bottom", "top", "both"
             insertPager: function(ipage) {
-                $(ipage).parent().append('<div id="iPage-navigation" class="pager"></div>');
+                if(this.toolbarPosition === 'top' || this.toolbarPosition === 'both') {
+                    $(ipage).parent().prepend('<div id="iPage-navigation-top" class="pager"></div>');
+                }
+
+                if(this.toolbarPosition === 'bottom' || this.toolbarPosition === 'both') {
+                    $(ipage).parent().append('<div id="iPage-navigation-top" class="pager"></div>');
+                }
             }
         };
         
@@ -43,7 +50,7 @@
             pagecount = Math.ceil($(this).find(settings.children).length/settings.numPerPage);
             //Build iPage navigation
             settings.insertPager(this);
-            $("#iPage-navigation").empty().append(buildNavigation(root,settings.pagenumber));
+            $(".pager").empty().append(buildNavigation(root,settings.pagenumber));
             return this;
         });
         
@@ -122,24 +129,18 @@
         function createButton(buttonLabel,root, pagenumber, pagecount) {
 
             var $Button = $('<li class="button">' + buttonLabel + '</li>');
-            
-            var clickedPage = 1;
-            
+           
             switch (buttonLabel) {
                 case settings.firstButtonText:
-                    clickedPage = 1;
                     $Button.addClass("first");
                     break;
                 case settings.prevButtonText:
-                    clickedPage = pagenumber - 1;
                     $Button.addClass("prev");
                     break;
                 case settings.nextButtonText:
-                    clickedPage = pagenumber + 1;
                     $Button.addClass("next");
                     break;
                 case settings.lastButtonText:
-                    clickedPage = pagecount;
                     $Button.addClass("last");
                     break;
             }
@@ -156,33 +157,42 @@
             return $Button;
         }
         // Handler event when click
-        $("#iPage-navigation ul li.button").click(function(e){
+        $(".pager ul li.button").click(function(e){
             if(!$(this).hasClass("zero")){
-                var label = $(this).text();
+
                 var clickedPage = 0;
-                switch (label) {
-                    case settings.firstButtonText:
-                        clickedPage = 1;
-                        break;
-                    case settings.prevButtonText:
-                        clickedPage = currentPage - 1;
-                        break;
-                    case settings.nextButtonText:
-                        clickedPage = currentPage + 1;
-                        break;
-                    case settings.lastButtonText:
-                        clickedPage = pagecount;
-                        break;
-                    default:
-                        clickedPage = parseInt(label, 10);
+                if($(this).hasClass('first')) {
+                    clickedPage = 1;
+                } else if ($(this).hasClass('last')) {
+                    clickedPage = pagecount;
+                } else if ($(this).hasClass('next')) {
+                    clickedPage = currentPage + 1;
+                } else if ($(this).hasClass('prev')) {
+                    clickedPage = currentPage - 1;
+                } else {
+                    clickedPage = parseInt(label, 10);
                 }
+   
                 rebuildNavigation(clickedPage);
                 root.find(settings.children+".page"+currentPage).addClass("hide");
                 root.find(settings.children+".page"+clickedPage).removeClass("hide");                
                 currentPage = clickedPage;            
             }
         });
-        function rebuildNavigation(clickedPage){    
+
+        function setPgCurrent(pager, startPoint, endPoint, clickedPage) {
+            $(pager).find(".page-number").each(function(e){
+                if(startPoint <= endPoint){
+                    $(this).text(startPoint);
+                    if(startPoint == clickedPage){
+                        $(this).addClass('pgCurrent');
+                    }
+                    startPoint++;
+                }
+            });
+        }
+        
+        function rebuildNavigation(clickedPage){
             var startPoint = 1;
             var endPoint = settings.numButton;
             var middlePoint = Math.floor(endPoint/2);
@@ -199,35 +209,31 @@
             if (startPoint < 1) {
                 startPoint = 1;
             }
-            $("#iPage-navigation ul li.page-number").each(function(e){
-                if(startPoint <= endPoint){
-                    $(this).text(startPoint);
-                    if(startPoint == clickedPage){
-                        $(this).addClass('pgCurrent');
-                    }
-                    else{
-                        $(this).removeClass('pgCurrent');
-                    }
-                    startPoint++;                        
-                }
-            });    
+            $(".pager .pgCurrent").removeClass('pgCurrent');
+
+
+
+            $(".pager").each(function(e) {
+                setPgCurrent(this, startPoint, endPoint, clickedPage);
+                
+            });
             if(clickedPage == 1){
-                $("#iPage-navigation ul li.first").addClass("zero");
-                $("#iPage-navigation ul li.prev").addClass("zero");
-                $("#iPage-navigation ul li.next").removeClass("zero");
-                $("#iPage-navigation ul li.last").removeClass("zero");
+                $(".pager ul li.first").addClass("zero");
+                $(".pager ul li.prev").addClass("zero");
+                $(".pager ul li.next").removeClass("zero");
+                $(".pager ul li.last").removeClass("zero");
             }
             else if(clickedPage == pagecount){
-                $("#iPage-navigation ul li.next").addClass("zero");
-                $("#iPage-navigation ul li.last").addClass("zero");
-                $("#iPage-navigation ul li.first").removeClass("zero");
-                $("#iPage-navigation ul li.prev").removeClass("zero");
+                $(".pager ul li.next").addClass("zero");
+                $(".pager ul li.last").addClass("zero");
+                $(".pager ul li.first").removeClass("zero");
+                $(".pager ul li.prev").removeClass("zero");
             }
             else{
-                $("#iPage-navigation ul li.first").removeClass("zero");
-                $("#iPage-navigation ul li.prev").removeClass("zero");
-                $("#iPage-navigation ul li.next").removeClass("zero");
-                $("#iPage-navigation ul li.last").removeClass("zero");
+                $(".pager ul li.first").removeClass("zero");
+                $(".pager ul li.prev").removeClass("zero");
+                $(".pager ul li.next").removeClass("zero");
+                $(".pager ul li.last").removeClass("zero");
             }
         }
     };
