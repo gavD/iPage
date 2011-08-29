@@ -3,7 +3,7 @@
  * 
  * We have submitted a patch back to the original project
  * 
- * @version 1.0.2 Modified by Gavin Davies
+ * @version 1.0.3 Modified by Gavin Davies
  *
  * Code by Lufutu
  * @link http://lufutu.com
@@ -170,6 +170,7 @@
                 } else if ($(this).hasClass('prev')) {
                     clickedPage = currentPage - 1;
                 } else {
+                    var label = $(this).text();
                     clickedPage = parseInt(label, 10);
                 }
    
